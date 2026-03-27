@@ -7,13 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#ffffff;--bg2:#f5f5f5;--surface:#ffffff;--surface2:#ebebeb;--border:#e0e0e0;--border2:#cccccc;--accent:#00b8cc;--accent-dim:rgba(0,184,204,0.1);--green:#00a85a;--green-dim:rgba(0,168,90,0.1);--amber:#cc8800;--amber-dim:rgba(204,136,0,0.1);--red:#e0002a;--red-dim:rgba(224,0,42,0.1);--text:#1a1a2e;--text2:#555555;--text3:#888888;--sidebar-w:240px;--header-h:60px;--radius:14px;--font:'Outfit',sans-serif;--font-display:'Bebas Neue',sans-serif;}
+[data-theme="dark"]{--bg:#080a0f;--bg2:#0d1018;--surface:#111520;--surface2:#171d2c;--border:#232b40;--border2:#2e3a55;--accent:#00e5ff;--accent-dim:rgba(0,229,255,0.1);--green:#00ff88;--green-dim:rgba(0,255,136,0.1);--amber:#ffb700;--amber-dim:rgba(255,183,0,0.1);--red:#ff4466;--red-dim:rgba(255,68,102,0.1);--text:#e8ecf5;--text2:#7a8aaa;--text3:#3d4a62;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow:hidden;}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
 /* LOGIN */
-#loginScreen{position:fixed;inset:0;z-index:1000;background:#f5f5f5;display:flex;align-items:center;justify-content:center;}
+#loginScreen{position:fixed;inset:0;z-index:1000;background:var(--bg2);display:flex;align-items:center;justify-content:center;}
 .login-panel{width:100%;max-width:420px;padding:20px;}
 .login-logo{font-family:var(--font-display);font-size:72px;letter-spacing:8px;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;line-height:1;margin-bottom:6px;}
 .login-tagline{text-align:center;color:var(--text2);font-size:13px;margin-bottom:40px;letter-spacing:.05em;}
@@ -266,6 +267,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 @media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr;}.content{padding:16px;}.samt{font-size:38px;}.egrid{grid-template-columns:1fr;}.sfacts{grid-template-columns:1fr;}}
 .sovl{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;display:none;}
 .sovl.show{display:block;}
+.theme-toggle{background:var(--surface);border:1px solid var(--border);border-radius:100px;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s;flex-shrink:0;}
+.theme-toggle:hover{border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -317,6 +320,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
       <div class="tright">
         <div class="mpill" onclick="cycleMonth()">◀ <b id="mlabel">Março 2025</b> ▶</div>
         <div class="spill" onclick="goPage('score')">⭐ <span id="topscore">500</span></div>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Alternar tema">🌙</button>
       </div>
     </div>
 
@@ -539,6 +543,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <div class="ptspop" id="ptspop"><div class="pn" id="ptsn">+50</div><div style="font-size:14px;color:var(--text2);">pontos ganhos! 🎉</div></div>
 
 <script>
+// ============================================================
+// THEME
+// ============================================================
+function toggleTheme(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeToggle').textContent=dark?'🌙':'☀️';
+  localStorage.setItem('nks-theme',dark?'light':'dark');
+}
+(function(){
+  const saved=localStorage.getItem('nks-theme')||'light';
+  document.documentElement.setAttribute('data-theme',saved);
+  window.addEventListener('DOMContentLoaded',function(){
+    document.getElementById('themeToggle').textContent=saved==='dark'?'☀️':'🌙';
+  });
+})();
+
 // ============================================================
 // CONSTANTS
 // ============================================================
